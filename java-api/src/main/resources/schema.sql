@@ -15,7 +15,7 @@ CREATE TABLE [IF NOT EXISTS] security (
 
 
 CREATE TABLE [IF NOT EXISTS] book (
-    book_id INT NOT NULL [PRIMARY KEY],
+    book_id INT AUTO_INCREMENT NOT NULL [PRIMARY KEY],
     book_name VARCHAR(250) NOT NULL,
     FOREIGN KEY (trade_id) REFERENCES trade(trade_id)
 );
