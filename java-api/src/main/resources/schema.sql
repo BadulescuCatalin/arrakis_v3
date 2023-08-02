@@ -1,17 +1,17 @@
 
 
 CREATE TABLE [IF NOT EXISTS] security (
-    bond_id INT NOT NULL [PRIMARY KEY],
+    bond_id INT AUTO_INCREMENT NOT NULL ,
     bond_name VARCHAR(250) NOT NULL,
     cusip    VARCHAR(500) ,
-    isin VARCHAR(500) NOT NULL,
-    bond_type VARCHAR(50) NOT NULL,
-    bond_status VARCHAR(100) NOT NULL,
+    isin VARCHAR(500) NOT NULL ,
+    bond_type CHAR(50) NOT NULL,
+    bond_status CHAR(50) NOT NULL,
     bond_maturity_date DATE,
-    bond_currency VARCHAR(50) NOT NULL,
-    FOREIGN KEY (book_id) REFERENCES book(book_id)
+    bond_currency CHAR(50) NOT NULL,
+    PRIMARY KEY(isin)
+    FOREIGN KEY (trade_id) REFERENCES trade(trade_id)
 );
-
 
 
 CREATE TABLE [IF NOT EXISTS] book (
@@ -29,6 +29,6 @@ CREATE TABLE [IF NOT EXISTS] trade (
     trade_status CHAR(50) NOT NULL,
     trade_date DATE,
     trade_unit_price FLOAT NOT NULL,
-    FOREIGN KEY (book_id) REFERENCES book(book_id)
+    FOREIGN KEY (isin) REFERENCES security(isin)
 );
 
