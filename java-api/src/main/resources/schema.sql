@@ -11,7 +11,7 @@ CREATE TABLE [IF NOT EXISTS] security (
     bond_currency CHAR(50) NOT NULL,
     issuer_name VARCHAR(250) NOT NULL,
     trade_id INT,
-    PRIMARY KEY(security_id,isin),
+    PRIMARY KEY(isin),
     FOREIGN KEY (trade_id) REFERENCES trade(trade_id)
 );
 
