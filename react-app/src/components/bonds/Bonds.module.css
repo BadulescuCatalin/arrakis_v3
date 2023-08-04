@@ -17,6 +17,14 @@ td, th{
 
 .card {
     width: 30%;
+    margin-bottom: 30px;
+}
+
+.logout {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 20px;
 }
 
 

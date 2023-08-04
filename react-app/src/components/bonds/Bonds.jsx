@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { findBonds } from "../../services/BondServices";
+import { findBonds, isinSearch, maturitySearch } from "../../services/BondServices";
 import { Button, Card, Col, Form, Row, Table } from "react-bootstrap";
 import styles from "./Bonds.module.css";
 import { useNavigate } from "react-router-dom";
@@ -37,7 +37,7 @@ const dummyData = [
     "bond_currency": "USD",
     "cusip": "",
     "face_value (mn)": 1000,
-    "isin": "XS1988387211",
+    "isin": "XS1988387210",
     "issuer_name": "BNPParibasIssu 4,37% Microsoft Corp (USD)",
     "bond_maturity_date": "05/08/2023",
     "status": "active",
@@ -70,28 +70,33 @@ const dummyData = [
 export const Bonds = (props) => {
   const [bonds, setBonds] = useState(dummyData);
   const [date, setDate] = useState("");
-  const [isin, setIsin] = useState(new Set());
   const [warning, setWarning] = useState("");
-  const [isinnone, setIsinnone] = useState("");
+  const [identifier, setIdentifier] = useState("");
+  const [deBonds, setDeBonds] = useState([]);
   const navigate = useNavigate();
+  const allBonds = dummyData;
 
-  // get bonds values
-  const deBonds = [];
-
+  //local test version
   const dateChange = e => {
-    setIsinnone("");
     setDate(e.target.value);
-    setIsin(new Set());
+    setBonds(allBonds);
     setWarning("");
   }
 
+  //local test version
+  const identifierChange = e => {
+    setIdentifier(e.target.value);
+    setBonds(allBonds);
+  }
+
+  // local test version
   const checkClick = e => {
     e.preventDefault();
     let enteredDate = date.split("/");
     let day = +enteredDate[0];
     let month = +enteredDate[1];
     let year = +enteredDate[2];
-    let temIsin = new Set();
+    let temp = [];
     if (Number.isInteger(day) && Number.isInteger(month) && Number.isInteger(year)
       && day >= 1 && day <= 31 && month >= 1 && month <= 31 && year >= 1900) {
       for (let i = 0; i < bonds.length; i++) {
@@ -100,39 +105,79 @@ export const Bonds = (props) => {
         let maturityDate = new Date(rawDate[2], rawDate[1] - 1, rawDate[0]).getTime();
         let nowDate = new Date(year, month - 1, day).getTime();
         if (Math.abs((nowDate - maturityDate) / 3600000) <= 7 * 24) {
-          temIsin.add(bonds[i]["isin"])
+          temp.push(bonds[i])
         }
       }
+      setBonds(temp);
       setWarning("");
-      setIsin(temIsin);
-      if (temIsin.size === 0) {
-        setIsinnone("Sorry none available!")
-      } else {
-        setIsinnone("");
-      }
     } else {
-      setIsinnone("");
-      setIsin(new Set());
       setWarning("Please enter the correct date format!");
     }
   }
+
+  // backend interaction version
+  // const checkClick = e => {
+  //   e.preventDefault();
+
+  //   let enteredDate = date.split("/");
+  //   let day = +enteredDate[0];
+  //   let month = +enteredDate[1];
+  //   let year = +enteredDate[2];
+  //   if (Number.isInteger(day) && Number.isInteger(month) && Number.isInteger(year)
+  //     && day >= 1 && day <= 31 && month >= 1 && month <= 31 && year >= 1900) {
+  //     maturitySearch(date)
+  //       .then(({ data }) => {
+  //         console.log(data);
+  //         setBonds(data);
+  //         setWarning("");
+  //       })
+  //   } else {
+  //     setWarning("Please enter the correct date format!");
+  //   }
+  // }
+
+  // local test version
+  const checkClick2 = e => {
+    e.preventDefault();
+    const filteredBonds = [].concat(allBonds.filter(ele => ele.isin === identifier || ele.cusip === identifier));
+    setBonds(filteredBonds);
+  }
+
+  // backend interaction version
+  // const checkClick2 = e => {
+  //   e.preventDefault();
+  //   isinSearch(isin)
+  //     .then(({ data }) => {
+  //       setBonds(data);
+  //     })
+  // }
 
   const logout = () => {
     props.getAuth(false);
     navigate('/');
   }
 
-
-  for (let i = 0; i < bonds.length; i++) {
-    deBonds.push(
-      <>
-        {Object.values(bonds[i]).map((value, index) => (
-          <td key={index}>{value}</td>
-        ))}
-      </>
-    );
+  // get all the values of corresponding columns
+  const getDeBonds = () => {
+    let temp = [];
+    for (let i = 0; i < bonds.length; i++) {
+      temp.push(
+        <>
+          {Object.values(bonds[i]).map((value, index) => (
+            <td key={index}>{value}</td>
+          ))}
+        </>
+      );
+    }
+    setDeBonds(temp);
   }
 
+  // as long as the bonds change, call the getDeBonds function again
+  useEffect(() => {
+    getDeBonds();
+  }, [bonds]);
+
+  // get all the bonds for the initial render
   // useEffect(() => {
   //   findBonds()
   //     .then(({data}) => {
@@ -140,19 +185,22 @@ export const Bonds = (props) => {
   //     })
   // }, []);
 
-  useEffect(()=>{
-    console.log(props.authState);
-    if(!props.authState) {
-      navigate("/");
-    }
-  }, []);
+
+  // router guard
+  // useEffect(()=>{
+  //   console.log(props.authState);
+  //   if(!props.authState) {
+  //     navigate("/");
+  //   }
+  // }, []);
 
   return (
     <>
-      <Button type='submit' onClick={logout}>Logout</Button>
+      <Button type='submit' onClick={logout} className={styles.logout}>Logout</Button>
+
       <Table responsive>
         <thead>
-          {bonds.length !== 0 && <tr>{Object.keys(bonds[0]).map((bondKey, index) => (
+          {<tr>{Object.keys(allBonds[0]).map((bondKey, index) => (
             <th key={index}>{bondKey}</th>
           )
           )}</tr>}
@@ -161,6 +209,7 @@ export const Bonds = (props) => {
           {deBonds.length !== 0 && deBonds.map(ele => <tr>{ele}</tr>)}
         </tbody>
       </Table>
+
       <Card className={styles.card}>
         <Card.Header>Bonds due for maturity within 5 business days</Card.Header>
         <Form>
@@ -179,12 +228,29 @@ export const Bonds = (props) => {
               <Col><Button style={{ width: "38%", margin: "16px 0 0 16px" }} onClick={checkClick}>check</Button></Col>
             </Row>
           </Form.Group>
-          <div style={{ color: "red", margin: "-10px 0 0 16px" }}>{warning}</div>
+          {warning && <div style={{ color: "red", margin: "-10px 0 0 16px" }}>{warning}</div>}
         </Form>
-        <Card.Body>
-          <Card.Title>The required bonds are shown below: </Card.Title>
-          {isinnone === "" ? [...isin].map(ele => <Card.Text>{ele}</Card.Text>) : isinnone}
-        </Card.Body>
+      </Card>
+
+      <Card className={styles.card}>
+        <Card.Header>Find the data you want from ISIN or CUSIP</Card.Header>
+        <Form>
+          <Form.Group className="mb-3">
+            <Form.Label style={{ margin: "15px 0 -10px 16px" }}>Please enter your wished ISIN or CUSIP here:</Form.Label>
+            <Row>
+              <Col>
+                <Form.Control
+                  type="text"
+                  placeholder="ISIN or CUSIP"
+                  value={identifier}
+                  onChange={identifierChange}
+                  style={{ width: "100%", margin: "16px 0 0 16px" }}>
+                </Form.Control>
+              </Col>
+              <Col><Button style={{ width: "38%", margin: "16px 0 0 16px" }} onClick={checkClick2}>check</Button></Col>
+            </Row>
+          </Form.Group>
+        </Form>
       </Card>
     </>
   );

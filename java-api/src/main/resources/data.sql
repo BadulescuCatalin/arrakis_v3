@@ -14,7 +14,7 @@ INSERT INTO users (username, email, password) VALUES ('vladp70','vlad@gmail.com'
 INSERT INTO users (username, email, password) VALUES ('amrutha1','amrutha@gmail.com', 'S/hYUcMuwakxIvIADFHnLQ=='); --1234
 
 INSERT INTO books (book_name)
-SELECT DISTINCT LOWER(book_name) FROM CSVREAD('.\\java-api\\src\\main\\resources\\db-bonds-data.csv');
+SELECT DISTINCT LOWER(book_name) FROM CSVREAD('.\\src\\main\\resources\\db-bonds-data.csv');
 
 
 
