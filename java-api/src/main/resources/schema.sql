@@ -72,4 +72,3 @@ SELECT concat (s.id, concat(b.id, c.id)) as id, s.isin, s.cusip, s.issuer_name, 
     t.settlement_date, b.book_name, c.name as bond_holder
 FROM security s join trades t on s.id = t.security_id join books b on t.book_id = b.id join counter_party c on t.counter_party_id = c.id;
 
-

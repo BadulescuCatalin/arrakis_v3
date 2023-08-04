@@ -29,4 +29,3 @@ UPDATE trades t SET t.book_id = (SELECT DISTINCT b.id
 UPDATE trades t SET t.security_id = (SELECT DISTINCT s.id
    FROM security s
    WHERE t.cusip_isin = concat(s.cusip, s.isin));
-
