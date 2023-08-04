@@ -1,10 +1,12 @@
 package com.db.grad.javaapi.model;
 
 import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -17,6 +19,9 @@ public class User {
 
     @Column(name = "password")
     private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<BookUser> bookUsers;
 
     public int getId() {
         return id;
@@ -50,13 +55,23 @@ public class User {
         this.password = password;
     }
 
+
+    public List<BookUser> getBookUsers() {
+        return bookUsers;
+    }
+
+    public void setBookUsers(List<BookUser> bookUsers) {
+        this.bookUsers = bookUsers;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + username + '\'' +
+                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", books=" + bookUsers +
                 '}';
     }
 }
