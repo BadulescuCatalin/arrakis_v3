@@ -16,4 +16,5 @@ public class BondsService {
     public List<Bond> allBonds() {
         return bondRepository.findAll();
     }
+
 }

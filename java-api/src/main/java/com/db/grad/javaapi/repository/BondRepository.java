@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface BondRepository extends ReadOnlyRepository<Bond, Integer> {
     // Because we've used a view we need to customise the query
-        @Query(nativeQuery = true, value = "select id, isin, bond_maturity_date from all_bonds")
+        @Query(nativeQuery = true, value = "select * from all_bonds")
         List<Bond> findAll();
 }

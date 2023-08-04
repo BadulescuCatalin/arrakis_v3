@@ -122,12 +122,15 @@ export const Bonds = (props) => {
     navigate('/');
   }
 
+
   for (let i = 0; i < bonds.length; i++) {
-    deBonds.push(<>
-      {Object.values(bonds[i]).map((value, index) => (
-        <td key={index}>{value}</td>
-      ))}
-    </>);
+    deBonds.push(
+      <>
+        {Object.values(bonds[i]).map((value, index) => (
+          <td key={index}>{value}</td>
+        ))}
+      </>
+    );
   }
 
   // useEffect(() => {

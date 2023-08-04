@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form, Row, Card } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
-
+import { userLogin } from '../../services/BondServices';
 import styles from "./Auth.module.css";
 
 const Auth = (props) => {
@@ -31,6 +31,27 @@ const Auth = (props) => {
     const passwordChange = e => {
         setPassword(e.target.value);
         setWarning("");
+    }
+
+    const login2 = (e) => {
+        e.preventDefault();
+        const credentials = {};
+        credentials.email = email;
+        credentials.password = password;
+        
+        userLogin(credentials)
+        .then(res => {
+            console.log(res);
+            setIsAuthenticated(true);
+            setWarning("");
+            props.getAuth(true);
+            navigate("/bonds");
+        })
+        .catch(err => {
+            setIsAuthenticated(false);
+            setWarning("Wrong Credentials!");
+
+        })
     }
 
     const login = (e) => {
@@ -64,7 +85,7 @@ const Auth = (props) => {
                         <Form.Label>Password</Form.Label>
                         <Form.Control type="password" value={password} onChange={passwordChange}></Form.Control>
                     </Form.Group>
-                    <Button type='submit' onClick={login}>Login</Button>
+                    <Button type='submit' onClick={login2}>Login</Button>
                 </Form>
             </Row>
             {warning && <Card className={styles.warningCard}>
