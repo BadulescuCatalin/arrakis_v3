@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS dogs;
+//DROP TABLE IF EXISTS dogs;
 DROP TABLE IF EXISTS trades;
 DROP TABLE IF EXISTS book_user;
 DROP TABLE IF EXISTS users;
@@ -7,11 +7,11 @@ DROP TABLE IF EXISTS security;
 DROP TABLE IF EXISTS counter_party;
 DROP TABLE IF EXISTS bonds;
 
-CREATE TABLE dogs (
-    dog_id INT NOT NULL,
-    name VARCHAR(250) NOT NULL,
-    age INT NOT NULL
-);
+--CREATE TABLE dogs (
+--    dog_id INT NOT NULL,
+--    name VARCHAR(250) NOT NULL,
+--    age INT NOT NULL
+--);
 
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -68,15 +68,15 @@ CREATE TABLE trades (
     FOREIGN KEY (counter_party_id) REFERENCES counter_party(id)
 );
 
-CREATE TABLE bonds (
-    id INT NOT NULL,
-    bond_maturity_date VARCHAR(250) NOT NULL,
-    isin VARCHAR(250) NOT NULL
-);
-
-CREATE VIEW IF NOT EXISTS all_bonds_old as
-SELECT  id, bond_maturity_date, isin from bonds;
-
+--CREATE TABLE bonds (
+--    id INT NOT NULL,
+--    bond_maturity_date VARCHAR(250) NOT NULL,
+--    isin VARCHAR(250) NOT NULL
+--);
+--
+--CREATE VIEW IF NOT EXISTS all_bonds_old as
+--SELECT  id, bond_maturity_date, isin from bonds;
+--
 CREATE VIEW IF NOT EXISTS all_bonds as
 SELECT  s.isin, s.cusip, s.issuer_name, s.maturity_date as bond_maturity_date, s.coupon, s.type as bond_type , s.face_value,
     s.currency as bond_currency, s.status as bond_status,
