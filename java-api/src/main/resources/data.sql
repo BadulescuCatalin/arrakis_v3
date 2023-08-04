@@ -32,4 +32,6 @@ INSERT INTO trades (id,book_id,security_id,counter_party_id,currency,status,quan
 SELECT trade_id,book_id,security_id,counter_party_id,trade_currency,trade_status,quantity,unit_price,trade_type,trade_date,settlement_date
 FROM CSVREAD('.\\java-api\\src\\main\\resources\\db-bonds-data.csv');
 
-
+INSERT INTO bond (id, ISIN, CUSIP, ISSUER_NAME, BOND_MATURITY_DATE, COUPON, BOND_TYPE, FACE_VALUE, BOND_CURRENCY, BOND_STATUS, TRADE_CURRENCY, TRADE_STATUS, QUANTITY, UNIT_PRICE, BUY_SELL, TRADE_DATE, SETTLEMENT_DATE, BOOK_NAME, BOND_HOLDER)
+SELECT ROW_NUMBER() OVER (ORDER BY isin), ISIN, CUSIP, ISSUER_NAME, BOND_MATURITY_DATE, COUPON, BOND_TYPE, FACE_VALUE, BOND_CURRENCY, BOND_STATUS, TRADE_CURRENCY, TRADE_STATUS, QUANTITY, UNIT_PRICE, BUY_SELL, TRADE_DATE, SETTLEMENT_DATE, BOOK_NAME, BOND_HOLDER
+FROM all_bonds;

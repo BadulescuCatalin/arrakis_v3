@@ -28,8 +28,8 @@ public class Bond implements Serializable {
     @Column(name = "coupon")
     private float coupon;
 
-    @Column(name = "type")
-    private String type;
+    @Column(name = "bond_type")
+    private String bond_type;
 
     @Column(name = "face_value")
     private float face_value;
@@ -114,12 +114,12 @@ public class Bond implements Serializable {
         this.coupon = coupon;
     }
 
-    public String getType() {
-        return type;
+    public String getBond_type() {
+        return bond_type;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setBond_type(String bond_type) {
+        this.bond_type = bond_type;
     }
 
     public float getFace_value() {
@@ -227,7 +227,7 @@ public class Bond implements Serializable {
                 ", cusip='" + cusip + '\'' +
                 ", issuer_name='" + issuer_name + '\'' +
                 ", coupon=" + coupon +
-                ", type='" + type + '\'' +
+                ", bond_type='" + bond_type + '\'' +
                 ", face_value=" + face_value +
                 ", bond_currency='" + bond_currency + '\'' +
                 ", bond_status='" + bond_status + '\'' +
