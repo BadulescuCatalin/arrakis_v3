@@ -7,12 +7,6 @@ DROP TABLE IF EXISTS security;
 DROP TABLE IF EXISTS counter_party;
 DROP TABLE IF EXISTS bonds;
 
---CREATE TABLE dogs (
---    dog_id INT NOT NULL,
---    name VARCHAR(250) NOT NULL,
---    age INT NOT NULL
---);
-
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(250) UNIQUE NOT NULL,
@@ -23,6 +17,11 @@ CREATE TABLE users (
 CREATE TABLE books (
     id INT PRIMARY KEY AUTO_INCREMENT,
     book_name VARCHAR(250) NOT NULL
+);
+
+CREATE TABLE counter_party (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(250) NOT NULL
 );
 
 CREATE TABLE book_user (
@@ -46,16 +45,8 @@ CREATE TABLE security (
     status VARCHAR(50) DEFAULT NULL
 );
 
-CREATE TABLE counter_party (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(250) NOT NULL
-);
-
 CREATE TABLE trades (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    book_id INT NOT NULL,
-    security_id INT NOT NULL,
-    counter_party_id INT NOT NULL,
     currency VARCHAR(5) NOT NULL,
     status VARCHAR(50) NOT NULL,
     quantity INT NOT NULL,
@@ -63,20 +54,17 @@ CREATE TABLE trades (
     buy_sell VARCHAR(50) NOT NULL,
     trade_date VARCHAR(50) NOT NULL,
     settlement_date VARCHAR(50) NOT NULL,
+    cusip_isin VARCHAR(100),
+    security_id INT,
+    counter_party_name VARCHAR(250) NOT NULL,
+    counter_party_id INT,
+    book_name VARCHAR(250),
+    book_id INT,
     FOREIGN KEY (book_id) REFERENCES books(id),
     FOREIGN KEY (security_id) REFERENCES security(id),
     FOREIGN KEY (counter_party_id) REFERENCES counter_party(id)
 );
 
---CREATE TABLE bonds (
---    id INT NOT NULL,
---    bond_maturity_date VARCHAR(250) NOT NULL,
---    isin VARCHAR(250) NOT NULL
---);
---
---CREATE VIEW IF NOT EXISTS all_bonds_old as
---SELECT  id, bond_maturity_date, isin from bonds;
---
 CREATE VIEW IF NOT EXISTS all_bonds as
 SELECT concat (s.id, concat(b.id, c.id)) as id, s.isin, s.cusip, s.issuer_name, s.maturity_date as bond_maturity_date, s.coupon, s.type as type , s.face_value,
     s.currency as bond_currency, s.status as bond_status,
