@@ -1,11 +1,15 @@
-//DROP TABLE IF EXISTS dogs;
+-- Drop dependent tables first
 DROP TABLE IF EXISTS trades;
 DROP TABLE IF EXISTS book_user;
+
+-- Drop tables with no dependencies
+DROP TABLE IF EXISTS all_bonds; -- Drop view first if it references tables
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS books;
-DROP TABLE IF EXISTS security;
 DROP TABLE IF EXISTS counter_party;
-DROP TABLE IF EXISTS bonds;
+DROP TABLE IF EXISTS security;
+
+-- Drop the table that references "books"
+DROP TABLE IF EXISTS books;
 
 --CREATE TABLE dogs (
 --    dog_id INT NOT NULL,
