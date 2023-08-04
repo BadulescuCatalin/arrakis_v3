@@ -68,7 +68,7 @@ const dummyData = [
 ];
 
 export const Bonds = (props) => {
-  const [bonds, setBonds] = useState(dummyData);
+  const [bonds, setBonds] = useState([]);
   const [date, setDate] = useState("");
   const [isin, setIsin] = useState(new Set());
   const [warning, setWarning] = useState("");
@@ -133,12 +133,12 @@ export const Bonds = (props) => {
     );
   }
 
-  // useEffect(() => {
-  //   findBonds()
-  //     .then(({data}) => {
-  //       setBonds(data);
-  //     })
-  // }, []);
+  useEffect(() => {
+    findBonds()
+      .then(({data}) => {
+        setBonds(data);
+      })
+  }, []);
 
   useEffect(()=>{
     console.log(props.authState);
