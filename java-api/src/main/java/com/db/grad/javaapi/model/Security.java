@@ -1,5 +1,7 @@
 package com.db.grad.javaapi.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -11,8 +13,8 @@ public class Security {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "issin")
-    private String issin;
+    @Column(name = "isin")
+    private String isin;
 
     @Column(name = "cusip")
     private String cusip;
@@ -20,8 +22,9 @@ public class Security {
     @Column(name = "issuer_name")
     private String issuer_name;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "GMT")
     @Column(name = "maturity_date")
-    private String maturity_date;
+    private Date maturity_date;
 
     @Column(name = "coupon")
     private float coupon;
@@ -50,11 +53,11 @@ public class Security {
     }
 
     public String getIssin() {
-        return issin;
+        return isin;
     }
 
     public void setIssin(String issin) {
-        this.issin = issin;
+        this.isin = issin;
     }
 
     public String getCusip() {
@@ -73,11 +76,11 @@ public class Security {
         this.issuer_name = issuer_name;
     }
 
-    public String getMaturity_date() {
+    public Date getMaturity_date() {
         return maturity_date;
     }
 
-    public void setMaturity_date(String maturity_date) {
+    public void setMaturity_date(Date maturity_date) {
         this.maturity_date = maturity_date;
     }
 

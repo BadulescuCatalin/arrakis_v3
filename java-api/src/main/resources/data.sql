@@ -25,11 +25,11 @@ INSERT INTO users (username, email, password) VALUES ('vladp70','vlad@gmail.com'
 INSERT INTO users (username, email, password) VALUES ('amrutha1','amrutha@gmail.com', 'S/hYUcMuwakxIvIADFHnLQ=='); --1234
 
 INSERT INTO security (isin,cusip,issuer_name,maturity_date,coupon,type,face_value,currency,status)
-SELECT isin, cusip, issuer_name, maturity_date, coupon_percent, type, face_value, bond_currency, status
+SELECT isin, cusip, issuer_name, PARSEDATETIME(maturity_date, 'd/M/yyyy'), coupon_percent, type, face_value, bond_currency, status
 FROM CSVREAD('.\\java-api\\src\\main\\resources\\db-bonds-data.csv');
 
 INSERT INTO trades (id,book_id,security_id,counter_party_id,currency,status,quantity,unit_price,buy_sell,trade_date,settlement_date)
-SELECT trade_id,book_id,security_id,counter_party_id,trade_currency,trade_status,quantity,unit_price,trade_type,trade_date,settlement_date
+SELECT trade_id,book_id,security_id,counter_party_id,trade_currency,trade_status,quantity,unit_price,trade_type, PARSEDATETIME(trade_date, 'd/M/yyyy'), PARSEDATETIME(settlement_date, 'd/M/yyyy')
 FROM CSVREAD('.\\java-api\\src\\main\\resources\\db-bonds-data.csv');
 
 INSERT INTO bond (id, ISIN, CUSIP, ISSUER_NAME, BOND_MATURITY_DATE, COUPON, BOND_TYPE, FACE_VALUE, BOND_CURRENCY, BOND_STATUS, TRADE_CURRENCY, TRADE_STATUS, QUANTITY, UNIT_PRICE, BUY_SELL, TRADE_DATE, SETTLEMENT_DATE, BOOK_NAME, BOND_HOLDER)

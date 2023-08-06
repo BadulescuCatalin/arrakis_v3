@@ -4,6 +4,7 @@ import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Immutable
@@ -17,7 +18,7 @@ public class Bond implements Serializable {
     private String isin;
 
     @Column(name="bond_maturity_date")
-    private String bond_maturity_date;
+    private Date bond_maturity_date;
 
     @Column(name="cusip")
     private String cusip;
@@ -56,10 +57,10 @@ public class Bond implements Serializable {
     private String buy_sell;
 
     @Column(name = "trade_date")
-    private String trade_date;
+    private Date trade_date;
 
     @Column(name = "settlement_date")
-    private String settlement_date;
+    private Date settlement_date;
 
     @Column(name = "bond_holder")
     private String bond_holder;
@@ -82,11 +83,11 @@ public class Bond implements Serializable {
         this.isin = isin;
     }
 
-    public String getBond_maturity_date() {
+    public Date getBond_maturity_date() {
         return bond_maturity_date;
     }
 
-    public void setBond_maturity_date(String bond_maturity_date) {
+    public void setBond_maturity_date(Date bond_maturity_date) {
         this.bond_maturity_date = bond_maturity_date;
     }
 
@@ -186,19 +187,19 @@ public class Bond implements Serializable {
         this.buy_sell = buy_sell;
     }
 
-    public String getTrade_date() {
+    public Date getTrade_date() {
         return trade_date;
     }
 
-    public void setTrade_date(String trade_date) {
+    public void setTrade_date(Date trade_date) {
         this.trade_date = trade_date;
     }
 
-    public String getSettlement_date() {
+    public Date getSettlement_date() {
         return settlement_date;
     }
 
-    public void setSettlement_date(String settlement_date) {
+    public void setSettlement_date(Date settlement_date) {
         this.settlement_date = settlement_date;
     }
 

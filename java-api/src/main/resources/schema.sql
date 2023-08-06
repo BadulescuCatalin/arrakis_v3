@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS trades;
 DROP TABLE IF EXISTS book_user;
 
 -- Drop tables with no dependencies
-DROP TABLE IF EXISTS all_bonds; -- Drop view first if it references tables
+--DROP TABLE IF EXISTS all_bonds; -- Drop view first if it references tables
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS counter_party;
 DROP TABLE IF EXISTS security;
@@ -42,7 +42,7 @@ CREATE TABLE security (
     isin VARCHAR(50) DEFAULT NULL,
     cusip VARCHAR(50) DEFAULT NULL,
     issuer_name VARCHAR(250) NOT NULL,
-    maturity_date VARCHAR(50) NOT NULL,
+    maturity_date DATE NOT NULL,
     coupon FLOAT NOT NULL,
     type VARCHAR(250) NOT NULL,
     face_value FLOAT NOT NULL,
@@ -65,8 +65,8 @@ CREATE TABLE trades (
     quantity INT NOT NULL,
     unit_price FLOAT NOT NULL,
     buy_sell VARCHAR(50) NOT NULL,
-    trade_date VARCHAR(50) NOT NULL,
-    settlement_date VARCHAR(50) NOT NULL,
+    trade_date DATE NOT NULL,
+    settlement_date DATE NOT NULL,
     FOREIGN KEY (book_id) REFERENCES books(id),
     FOREIGN KEY (security_id) REFERENCES security(id),
     FOREIGN KEY (counter_party_id) REFERENCES counter_party(id)

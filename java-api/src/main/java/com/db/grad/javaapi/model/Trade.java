@@ -33,9 +33,9 @@ public class Trade {
     @Column(name = "buy_sell")
     private String buy_sell;
     @Column(name = "trade_date")
-    private String trade_date;
+    private Date trade_date;
     @Column(name = "settlement_date")
-    private String settlement_date;
+    private Date settlement_date;
 
     public Book getBook() {
         return book;
@@ -109,19 +109,19 @@ public class Trade {
         this.id = id;
     }
 
-    public String getTrade_date() {
+    public Date getTrade_date() {
         return trade_date;
     }
 
-    public void setTrade_date(String trade_date) {
+    public void setTrade_date(Date trade_date) {
         this.trade_date = trade_date;
     }
 
-    public String getSettlement_date() {
+    public Date getSettlement_date() {
         return settlement_date;
     }
 
-    public void setSettlement_date(String settlement_date) {
+    public void setSettlement_date(Date settlement_date) {
         this.settlement_date = settlement_date;
     }
 
