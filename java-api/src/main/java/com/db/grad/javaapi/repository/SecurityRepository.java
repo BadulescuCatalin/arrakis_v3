@@ -33,4 +33,7 @@ public interface SecurityRepository extends JpaRepository<Security, Integer> {
                     "JOIN users u ON bu.user_id = u.id " +
                     "WHERE u.email = :email")
     List<String> findBondsInMyBooks(String email);
+    @Query(nativeQuery = true, value = "SELECT * FROM SECURITY" +
+            " where isin like :data or cusip like :data")
+    List<Security> findSecurityByIsinOrCusip(String data);
 }

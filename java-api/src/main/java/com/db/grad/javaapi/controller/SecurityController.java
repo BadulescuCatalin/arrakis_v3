@@ -63,7 +63,7 @@ public class SecurityController {
                 .body(null);
     }
 
-    @PostMapping("/securities/issinOrCusip")
+    @PostMapping("/securities/issinAndOrCusip")
     public ResponseEntity<List<Security>> getSecuritiesByIsinAndOrCusip(@RequestBody Map<String, String> map) {
         String cusip = "";
         String isin = "";
@@ -82,7 +82,19 @@ public class SecurityController {
                 .body(null);
     }
 
-    // RESPONSE ENTITY
+    @PostMapping("/securities/issinOrCusip")
+    public ResponseEntity<List<Security>> getSecuritiesByIsinOrCusip(@RequestBody Map<String, String> map) {
+        String data = "";
+        data = map.get("data");
+        List<Security> securities = securityService.getSecuritiesByIsinOrCusip(data);
+        if(securities != null && securities.size() != 0) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(securities);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(null);
+    }
+
     @PostMapping("security/counter_party_name")
     public ResponseEntity<String> getCounterPartyByIsin(@RequestBody Map<String, String> map) {
         String isin = map.get("isin");

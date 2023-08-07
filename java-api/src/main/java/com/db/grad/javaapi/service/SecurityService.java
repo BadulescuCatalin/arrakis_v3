@@ -29,6 +29,10 @@ public class SecurityService {
         return securityRepository.findByIsinOrCusip(isin, cusip);
     }
 
+    public List<Security> getSecuritiesByIsinOrCusip(String data) {
+        return securityRepository.findSecurityByIsinOrCusip(data);
+    }
+
     public String getCounterPartyByIsin(String isin) {
         return securityRepository.findCounterPartyByIsin(isin);
     }

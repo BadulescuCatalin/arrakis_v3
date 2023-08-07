@@ -68,7 +68,7 @@ const dummyData = [
 ];
 
 export const Bonds = (props) => {
-  const [bonds, setBonds] = useState(dummyData);
+  const [bonds, setBonds] = useState([]);
   const [date, setDate] = useState("");
   const [warning, setWarning] = useState("");
   const [identifier, setIdentifier] = useState("");
@@ -90,67 +90,80 @@ export const Bonds = (props) => {
   }
 
   // local test version
-  const checkClick = e => {
-    e.preventDefault();
-    let enteredDate = date.split("/");
-    let day = +enteredDate[0];
-    let month = +enteredDate[1];
-    let year = +enteredDate[2];
-    let temp = [];
-    if (Number.isInteger(day) && Number.isInteger(month) && Number.isInteger(year)
-      && day >= 1 && day <= 31 && month >= 1 && month <= 31 && year >= 1900) {
-      for (let i = 0; i < bonds.length; i++) {
-        //get the filtered bonds based on maturity date
-        let rawDate = bonds[i]["bond_maturity_date"].split("/");
-        let maturityDate = new Date(rawDate[2], rawDate[1] - 1, rawDate[0]).getTime();
-        let nowDate = new Date(year, month - 1, day).getTime();
-        if (Math.abs((nowDate - maturityDate) / 3600000) <= 7 * 24) {
-          temp.push(bonds[i])
-        }
-      }
-      setBonds(temp);
-      setWarning("");
-    } else {
-      setWarning("Please enter the correct date format!");
-    }
-  }
-
-  // backend interaction version
   // const checkClick = e => {
   //   e.preventDefault();
-
   //   let enteredDate = date.split("/");
   //   let day = +enteredDate[0];
   //   let month = +enteredDate[1];
   //   let year = +enteredDate[2];
+  //   let temp = [];
   //   if (Number.isInteger(day) && Number.isInteger(month) && Number.isInteger(year)
   //     && day >= 1 && day <= 31 && month >= 1 && month <= 31 && year >= 1900) {
-  //     maturitySearch(date)
-  //       .then(({ data }) => {
-  //         console.log(data);
-  //         setBonds(data);
-  //         setWarning("");
-  //       })
+  //     for (let i = 0; i < bonds.length; i++) {
+  //       //get the filtered bonds based on maturity date
+  //       let rawDate = bonds[i]["bond_maturity_date"].split("/");
+  //       let maturityDate = new Date(rawDate[2], rawDate[1] - 1, rawDate[0]).getTime();
+  //       let nowDate = new Date(year, month - 1, day).getTime();
+  //       if (Math.abs((nowDate - maturityDate) / 3600000) <= 7 * 24) {
+  //         temp.push(bonds[i])
+  //       }
+  //     }
+  //     setBonds(temp);
+  //     setWarning("");
   //   } else {
   //     setWarning("Please enter the correct date format!");
   //   }
   // }
 
-  // local test version
-  const checkClick2 = e => {
+  //backend interaction version
+  const checkClick = e => {
     e.preventDefault();
-    const filteredBonds = [].concat(allBonds.filter(ele => ele.isin === identifier || ele.cusip === identifier));
-    setBonds(filteredBonds);
+
+    let enteredDate = date.split("/");
+    let day = +enteredDate[0];
+    let month = +enteredDate[1];
+    let year = +enteredDate[2];
+    if (Number.isInteger(day) && Number.isInteger(month) && Number.isInteger(year)
+      && day >= 1 && day <= 31 && month >= 1 && month <= 31 && year >= 1900) {
+      setDate(enteredDate);
+      const dateMap = {
+        date
+      };
+      maturitySearch(dateMap)
+        .then(({ data }) => {
+          console.log(data);
+          setBonds(data);
+          setDate("");
+          setWarning("");
+        })
+        .catch(error => {
+          console.log(dateMap);
+          console.error("Error occurred during API call:", error);
+          // Handle the error as needed, e.g., set an error message state
+        });
+    } else {
+      setWarning("Please enter the correct date format!");
+    }
   }
 
-  // backend interaction version
+  // local test version
   // const checkClick2 = e => {
   //   e.preventDefault();
-  //   isinSearch(isin)
-  //     .then(({ data }) => {
-  //       setBonds(data);
-  //     })
+  //   const filteredBonds = [].concat(allBonds.filter(ele => ele.isin === identifier || ele.cusip === identifier));
+  //   setBonds(filteredBonds);
   // }
+
+  // backend interaction version
+  const checkClick2 = e => {
+    e.preventDefault();
+    const map = {
+      "data": identifier
+    };
+    isinSearch(map)
+      .then(({ data }) => {
+        setBonds(data);
+      })
+  }
 
   const logout = () => {
     props.getAuth(false);
@@ -178,21 +191,21 @@ export const Bonds = (props) => {
   }, [bonds]);
 
   // get all the bonds for the initial render
-  // useEffect(() => {
-  //   findBonds()
-  //     .then(({data}) => {
-  //       setBonds(data);
-  //     })
-  // }, []);
+  useEffect(() => {
+    findBonds()
+      .then(({data}) => {
+        setBonds(data);
+      })
+  }, []);
 
 
   // router guard
-  // useEffect(()=>{
-  //   console.log(props.authState);
-  //   if(!props.authState) {
-  //     navigate("/");
-  //   }
-  // }, []);
+  useEffect(()=>{
+    console.log(props.authState);
+    if(!props.authState) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <>
