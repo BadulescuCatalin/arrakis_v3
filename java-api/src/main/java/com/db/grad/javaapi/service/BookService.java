@@ -18,4 +18,7 @@ public class BookService {
         return bookRepository.findAll();
     }
 
+    public List<String> getUserBooks(String email) {
+        return bookRepository.findByEmail(email);
+    }
 }
