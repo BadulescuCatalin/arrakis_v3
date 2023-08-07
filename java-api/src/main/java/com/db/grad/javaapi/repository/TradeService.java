@@ -14,4 +14,11 @@ public class TradeService {
     public List<Trade> getAllTrades() {
         return tradeRepository.findAll();
     }
+    public List<Trade> getTradeByBookId(List<Integer> ids) {
+        List<Trade> trades = new ArrayList<>();
+        for(int id : ids) {
+            trades.addAll(tradeRepository.findByBookId(id));
+        }
+        return trades;
+    }
 }

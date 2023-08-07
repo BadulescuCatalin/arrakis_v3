@@ -1,5 +1,7 @@
 package com.db.grad.javaapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -10,14 +12,17 @@ public class Trade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "book_id", referencedColumnName = "id", nullable = false)
     private Book book;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "security_id", referencedColumnName = "id", nullable = false)
     private Security security;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "counter_party_id", referencedColumnName = "id", nullable = false)
     private CounterParty counterParty;

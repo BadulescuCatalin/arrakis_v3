@@ -8,4 +8,5 @@ import java.util.*;
 @Repository
 public interface TradeRepository extends JpaRepository<Trade, Integer> {
     List<Trade> findAll();
+    List<Trade> findByBookId(Integer id);
 }

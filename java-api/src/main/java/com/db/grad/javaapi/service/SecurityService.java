@@ -39,8 +39,8 @@ public class SecurityService {
         return securityRepository.findCounterPartyByIsin(isin);
     }
 
-    public List<String> getBondsInMyBooks(String email) {
-        return securityRepository.findBondsInMyBooks(email);
+    public List<Security> getBondsInMyBooks(Integer id, String email) {
+        return securityRepository.findBondsInMyBooks(id, email);
     }
 
     public List<BondDetailed> getAllBondsDetailed() {

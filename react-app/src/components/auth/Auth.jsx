@@ -43,6 +43,7 @@ const Auth = (props) => {
 
         userLogin(credentials)
             .then(res => {
+                localStorage.setItem("email", email);
                 console.log(res);
                 setIsAuthenticated(true);
                 setWarning("");

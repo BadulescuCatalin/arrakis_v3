@@ -13,6 +13,7 @@ const App = () => {
   const getAuth = (authState, email) => {
     setIsAuthenticated(authState);
     setEmail(email);
+    
   };
 
   return (

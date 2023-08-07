@@ -105,10 +105,11 @@ public class SecurityController {
     }
 
     @PostMapping("security/myBooks")
-    public ResponseEntity<List<String>> findBondsInMyBooks(@RequestBody Map<String, String> map) {
+    public ResponseEntity<List<Security>> findBondsInMyBooks(@RequestBody Map<String, String> map) {
         String email = map.get("email");
-        List<String> list = new ArrayList<>();
-        list =  securityService.getBondsInMyBooks(email);
+        String id = map.get("bookid");
+        List<Security> list = new ArrayList<>();
+        list =  securityService.getBondsInMyBooks(Integer.parseInt(id), email);
         if(list != null && list.size() != 0) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(list);

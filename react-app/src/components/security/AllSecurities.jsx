@@ -20,7 +20,7 @@ const AllSecurities = (props) => {
     const [securities, setSecurities] = useState([]);
     const [allSecruties, setAllSecurities] = useState([]);
     const [available, setAvailable] = useState(true);
-
+    const [email, setEmail] = useState(props.info);
     //local test version
     const dateChange = e => {
         setDate(e.target.value);
@@ -88,14 +88,16 @@ const AllSecurities = (props) => {
     const handleOptionSelect = (option) => {
         if (option === '1') {
             setSearchBy('All Bonds');
-            //setSecurities();
+            // setSecurities([]);
         } else {
             setSearchBy('My Books');
+            
             // bookSearch(props.info);
         }
     };
 
     useEffect(() => {
+        console.log(localStorage.getItem("email"));
         getSecuritiesFromAPI();
     },
         []
@@ -189,7 +191,7 @@ const AllSecurities = (props) => {
                             Sorry, none available!
                         </Alert>}
                     </Row> 
-                </> :  <Books />
+                </> :  <Books info={email}/>
             }
         </>
     );

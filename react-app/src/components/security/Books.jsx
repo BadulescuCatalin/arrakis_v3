@@ -1,35 +1,68 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Accordion } from 'react-bootstrap';
 import styles from "../security/AllSecurities.module.css";
+import { findBooks, findBookTrades } from '../../services/BookServices'
+import BondDetails from './BondDetails';
+
+export const Books = (props) => {
+
+  const [books, setBooks] = useState([]);
+  const [trades, setTrades] = useState([]);
+  const handleAccordionItemClick = (id) => {
+    const map = {
+      "email": localStorage.getItem("email"),
+      "bookid": id
+    }
+    findBookTrades(map)
+      .then(res => {
+        setTrades(res.data);
+        console.log(trades);
+      })
+      .catch(err => {
+        setBooks([]);
+        console.log(err);
+      })
+  }
+
+  useEffect(() => {
+    getBooksFromAPI();
+  },
+    []
+  )
+
+  const getBooksFromAPI = () => {
+    const map = {
+      "email": localStorage.getItem("email")
+    };
+    findBooks(map)
+      .then(res => {
+        console.log(res.data);
+        const bookList = res.data.map(item => {
+          const [id, book_name] = item.split(',');
+          return [id, book_name];
+        });
+        console.log(bookList)
+        setBooks(bookList);
+      })
+      .catch(err => {
+        setBooks([]);
+        console.log(err);
+      })
+  }
 
 
-export const Books = () => {
   return (
     <Accordion defaultActiveKey="0" className={styles.accordion}>
-      <Accordion.Item eventKey="0">
-        <Accordion.Header>Accordion Item #1</Accordion.Header>
-        <Accordion.Body>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="1">
-        <Accordion.Header>Accordion Item #2</Accordion.Header>
-        <Accordion.Body>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </Accordion.Body>
-      </Accordion.Item>
+      {books.map((book, index) => (
+        <Accordion.Item key={index} eventKey={index.toString()} onClick={() => handleAccordionItemClick(book[0])}>
+          <Accordion.Header>{book[1]}</Accordion.Header>
+          <Accordion.Body>
+            {trades.map((trade, tradeIndex) => (
+              <BondDetails key={tradeIndex} info={trade} />
+            ))}
+          </Accordion.Body>
+        </Accordion.Item>
+      ))}
     </Accordion>
   )
 }
