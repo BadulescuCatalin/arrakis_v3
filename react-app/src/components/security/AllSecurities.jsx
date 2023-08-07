@@ -4,32 +4,32 @@ import { Button, Row, Col, Form, Card } from 'react-bootstrap'
 import { useState } from 'react'
 import { findBonds, maturitySearch, isinSearch } from '../../services/BondServices'
 import { Nav } from 'react-bootstrap'
-import { Navbar } from 'react-bootstrap'
+import { Navbar, Alert } from 'react-bootstrap'
 import { Dropdown } from 'react-bootstrap'
 import styles from "../bonds/Bonds.module.css";
 import { useNavigate } from "react-router-dom";
 
 const AllSecurities = (props) => {
 
-    const [bonds, setBonds] = useState([]);
     const [date, setDate] = useState("");
     const [warning, setWarning] = useState("");
     const [identifier, setIdentifier] = useState("");
-    const [deBonds, setDeBonds] = useState([]);
     const navigate = useNavigate();
-    const allBonds = [];
+    const [searchBy, setSearchBy] = useState("All Bonds");
+    const [securities, setSecurities] = useState([]);
+    const [allSecruties, setAllSecurities] = useState([]);
 
     //local test version
     const dateChange = e => {
         setDate(e.target.value);
-        setBonds(allBonds);
+        setSecurities(allSecruties);
         setWarning("");
     }
 
     //local test version
     const identifierChange = e => {
         setIdentifier(e.target.value);
-        setBonds(allBonds);
+        setSecurities(allSecruties);
     }
 
     const checkClick = e => {
@@ -41,27 +41,20 @@ const AllSecurities = (props) => {
         let year = +enteredDate[2];
         if (Number.isInteger(day) && Number.isInteger(month) && Number.isInteger(year)
             && day >= 1 && day <= 31 && month >= 1 && month <= 31 && year >= 1900) {
-            setDate(enteredDate);
-            const dateMap = {
-                date
-            };
-            maturitySearch(dateMap)
+            maturitySearch({ date })
                 .then(({ data }) => {
                     console.log(data);
                     setSecurities(data);
-                    setDate("");
                     setWarning("");
                 })
                 .catch(error => {
-                    setDate("");
-                    console.log(dateMap);
-                    console.error("Error occurred during API call:", error);
-                    // Handle the error as needed, e.g., set an error message state
+                    setSecurities([]);
                 });
         } else {
             setWarning("Please enter the correct date format!");
         }
     }
+
     const checkClick2 = e => {
         e.preventDefault();
         const map = {
@@ -69,7 +62,7 @@ const AllSecurities = (props) => {
         };
         isinSearch(map)
             .then(({ data }) => {
-                setBonds(data);
+                setSecurities(data);
             })
     }
 
@@ -77,34 +70,6 @@ const AllSecurities = (props) => {
         props.getAuth(false);
         navigate('/');
     }
-
-    const getDeBonds = () => {
-        let temp = [];
-        for (let i = 0; i < bonds.length; i++) {
-            temp.push(
-                <>
-                    {Object.values(bonds[i]).map((value, index) => (
-                        <td key={index}>{value}</td>
-                    ))}
-                </>
-            );
-        }
-        setDeBonds(temp);
-    }
-
-    // as long as the bonds change, call the getDeBonds function again
-    useEffect(() => {
-        getDeBonds();
-    }, [bonds]);
-
-    // get all the bonds for the initial render
-    useEffect(() => {
-        findBonds()
-            .then(({ data }) => {
-                setBonds(data);
-            })
-    }, []);
-
 
     // router guard
     useEffect(() => {
@@ -114,8 +79,6 @@ const AllSecurities = (props) => {
         }
     }, []);
 
-
-    const [searchBy, setSearchBy] = useState('All Bonds');
     const handleOptionSelect = (option) => {
         if (option === '1') {
             setSearchBy('All Bonds');
@@ -125,7 +88,6 @@ const AllSecurities = (props) => {
             //setSecurities();
         }
     };
-    const [securities, setSecurities] = useState([]);
 
     useEffect(() => {
         getSecuritiesFromAPI();
@@ -137,12 +99,14 @@ const AllSecurities = (props) => {
         findBonds()
             .then(res => {
                 setSecurities(res.data);
+                setAllSecurities(res.data);
             })
             .catch(err => {
                 setSecurities([]);
                 console.log(err);
             })
     }
+
     return (
         <>
             <Navbar bg="light" expand="lg">
@@ -160,6 +124,7 @@ const AllSecurities = (props) => {
                             </Dropdown.Menu>
                         </Dropdown>
                     </Nav>
+                    <Button type='submit' onClick={logout} className={styles.logout}>Logout</Button>
                 </Navbar.Collapse>
             </Navbar>
             <Row>
@@ -207,12 +172,14 @@ const AllSecurities = (props) => {
                 </Card>
 
             </Row>
-            <Row>
-                {securities.map(security => (
+            <Row>{securities ?
+                securities.map(security => (
                     <div className='container' key={security.id}>
                         <SecurityDetails info={security} />
                     </div>
-                ))}
+                )) : <Alert variant="primary">
+                    Sorry, none available!
+                </Alert>}
             </Row>
         </>
     );

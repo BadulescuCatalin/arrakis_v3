@@ -4,68 +4,68 @@ import { Button, Card, Col, Form, Row, Table } from "react-bootstrap";
 import styles from "./Bonds.module.css";
 import { useNavigate } from "react-router-dom";
 
-const dummyData = [
-  {
-    "trade_type": "buy",
-    "trade_currency": "USD",
-    "quantity": 50,
-    "trade_settlement_date": "04/08/2021",
-    "trade_status": "open",
-    "trade_date": "13/05/2021",
-    "unit_price": 90,
-    "coupon_percent": 4.37,
-    "bond_currency": "USD",
-    "cusip": "",
-    "face_value (mn)": 1000,
-    "isin": "XS1988387210",
-    "issuer_name": "BNPParibasIssu 4,37% Microsoft Corp (USD)",
-    "bond_maturity_date": "05/08/2023",
-    "status": "active",
-    "type": "CORP",
-    "book_name": "trading_book_1",
-    "bond_holder": "AZ Holdings Inc"
-  },
-  {
-    "trade_type": "sell",
-    "trade_currency": "GBP",
-    "quantity": 40,
-    "trade_settlement_date": "04/08/2021",
-    "trade_status": "open",
-    "trade_date": "04/02/2021",
-    "unit_price": 89.56,
-    "coupon_percent": 4.37,
-    "bond_currency": "USD",
-    "cusip": "",
-    "face_value (mn)": 1000,
-    "isin": "XS1988387210",
-    "issuer_name": "BNPParibasIssu 4,37% Microsoft Corp (USD)",
-    "bond_maturity_date": "05/08/2023",
-    "status": "active",
-    "type": "CORP",
-    "book_name": "trading_book_1",
-    "bond_holder": "AZ Holdings Inc"
-  },
-  {
-    "trade_type": "buy",
-    "trade_currency": "USD",
-    "quantity": 1000,
-    "trade_settlement_date": "23/08/2021",
-    "trade_status": "open",
-    "trade_date": "13/05/2021",
-    "unit_price": 105.775,
-    "coupon_percent": 3.15,
-    "bond_currency": "USD",
-    "cusip": "123456780",
-    "face_value (mn)": 900,
-    "isin": "USN0280EAR64",
-    "issuer_name": "Airbus 3.15%  USD",
-    "bond_maturity_date": "12/07/2021",
-    "status": "active",
-    "type": "CORP",
-    "book_name": "trading_book_2",
-    "bond_holder": "Acme co"
-  }
-];
+// const dummyData = [
+//   {
+//     "trade_type": "buy",
+//     "trade_currency": "USD",
+//     "quantity": 50,
+//     "trade_settlement_date": "04/08/2021",
+//     "trade_status": "open",
+//     "trade_date": "13/05/2021",
+//     "unit_price": 90,
+//     "coupon_percent": 4.37,
+//     "bond_currency": "USD",
+//     "cusip": "",
+//     "face_value (mn)": 1000,
+//     "isin": "XS1988387210",
+//     "issuer_name": "BNPParibasIssu 4,37% Microsoft Corp (USD)",
+//     "bond_maturity_date": "05/08/2023",
+//     "status": "active",
+//     "type": "CORP",
+//     "book_name": "trading_book_1",
+//     "bond_holder": "AZ Holdings Inc"
+//   },
+//   {
+//     "trade_type": "sell",
+//     "trade_currency": "GBP",
+//     "quantity": 40,
+//     "trade_settlement_date": "04/08/2021",
+//     "trade_status": "open",
+//     "trade_date": "04/02/2021",
+//     "unit_price": 89.56,
+//     "coupon_percent": 4.37,
+//     "bond_currency": "USD",
+//     "cusip": "",
+//     "face_value (mn)": 1000,
+//     "isin": "XS1988387210",
+//     "issuer_name": "BNPParibasIssu 4,37% Microsoft Corp (USD)",
+//     "bond_maturity_date": "05/08/2023",
+//     "status": "active",
+//     "type": "CORP",
+//     "book_name": "trading_book_1",
+//     "bond_holder": "AZ Holdings Inc"
+//   },
+//   {
+//     "trade_type": "buy",
+//     "trade_currency": "USD",
+//     "quantity": 1000,
+//     "trade_settlement_date": "23/08/2021",
+//     "trade_status": "open",
+//     "trade_date": "13/05/2021",
+//     "unit_price": 105.775,
+//     "coupon_percent": 3.15,
+//     "bond_currency": "USD",
+//     "cusip": "123456780",
+//     "face_value (mn)": 900,
+//     "isin": "USN0280EAR64",
+//     "issuer_name": "Airbus 3.15%  USD",
+//     "bond_maturity_date": "12/07/2021",
+//     "status": "active",
+//     "type": "CORP",
+//     "book_name": "trading_book_2",
+//     "bond_holder": "Acme co"
+//   }
+// ];
 
 export const Bonds = (props) => {
   const [bonds, setBonds] = useState([]);
@@ -74,19 +74,16 @@ export const Bonds = (props) => {
   const [identifier, setIdentifier] = useState("");
   const [deBonds, setDeBonds] = useState([]);
   const navigate = useNavigate();
-  const allBonds = dummyData;
 
   //local test version
   const dateChange = e => {
     setDate(e.target.value);
-    setBonds(allBonds);
     setWarning("");
   }
 
   //local test version
   const identifierChange = e => {
     setIdentifier(e.target.value);
-    setBonds(allBonds);
   }
 
   // local test version
@@ -213,7 +210,7 @@ export const Bonds = (props) => {
 
       <Table responsive>
         <thead>
-          {<tr>{Object.keys(allBonds[0]).map((bondKey, index) => (
+          {<tr>{Object.keys(bonds[0]).map((bondKey, index) => (
             <th key={index}>{bondKey}</th>
           )
           )}</tr>}
