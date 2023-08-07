@@ -8,7 +8,6 @@ import java.util.*;
 @Entity
 @Table(name = "security")
 public class Security {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -52,12 +51,12 @@ public class Security {
         this.id = id;
     }
 
-    public String getIssin() {
+    public String getIsin() {
         return isin;
     }
 
-    public void setIssin(String issin) {
-        this.isin = issin;
+    public void setIsin(String isin) {
+        this.isin = isin;
     }
 
     public String getCusip() {
