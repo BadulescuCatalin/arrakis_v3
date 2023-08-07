@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -18,6 +19,6 @@ public interface BondRepository extends ReadOnlyRepository<Bond, Integer> {
                 " from all_bonds")
         List<Bond> findAll();
 
-    @Query(nativeQuery = true, value ="SELECT b FROM bond b WHERE b.maturityDate BETWEEN :beginDate AND :endDate")
-    List<Bond> findBondsByMaturityDateInterval(LocalDate beginDate, LocalDate endDate);
+    @Query(nativeQuery = true, value ="SELECT b FROM bond b WHERE b.bond_maturity_date BETWEEN :beginDate AND :endDate")
+    List<Bond> findBondsByMaturityDateInterval(Date beginDate, Date endDate);
 }

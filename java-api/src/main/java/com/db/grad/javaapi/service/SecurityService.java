@@ -28,4 +28,12 @@ public class SecurityService {
         }
         return securityRepository.findByIsinOrCusip(isin, cusip);
     }
+
+    public String getCounterPartyByIsin(String isin) {
+        return securityRepository.findCounterPartyByIsin(isin);
+    }
+
+    public List<String> getBondsInMyBooks(String email) {
+        return securityRepository.findBondsInMyBooks(email);
+    }
 }

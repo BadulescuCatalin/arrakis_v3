@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS book_user;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS counter_party;
 DROP TABLE IF EXISTS security;
+DROP TABLE IF EXISTS security_temp;
 
 -- Drop the table that references "books"
 DROP TABLE IF EXISTS books;
@@ -49,6 +50,20 @@ CREATE TABLE security (
     currency VARCHAR(5) NOT NULL,
     status VARCHAR(50) DEFAULT NULL
 );
+
+CREATE TABLE security_temp (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    isin VARCHAR(50) DEFAULT NULL,
+    cusip VARCHAR(50) DEFAULT NULL,
+    issuer_name VARCHAR(250) NOT NULL,
+    maturity_date DATE NOT NULL,
+    coupon FLOAT NOT NULL,
+    type VARCHAR(250) NOT NULL,
+    face_value FLOAT NOT NULL,
+    currency VARCHAR(5) NOT NULL,
+    status VARCHAR(50) DEFAULT NULL
+);
+
 
 CREATE TABLE counter_party (
     id INT PRIMARY KEY AUTO_INCREMENT,

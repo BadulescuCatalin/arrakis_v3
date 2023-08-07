@@ -82,4 +82,25 @@ public class SecurityController {
                 .body(null);
     }
 
+    // RESPONSE ENTITY
+    @PostMapping("security/counter_party_name")
+    public ResponseEntity<String> getCounterPartyByIsin(@RequestBody Map<String, String> map) {
+        String isin = map.get("isin");
+        String res =  securityService.getCounterPartyByIsin(isin);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(res);
+    }
+
+    @PostMapping("security/myBooks")
+    public ResponseEntity<List<String>> findBondsInMyBooks(@RequestBody Map<String, String> map) {
+        String email = map.get("email");
+        List<String> list = new ArrayList<>();
+        list =  securityService.getBondsInMyBooks(email);
+        if(list != null && list.size() != 0) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(list);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(null);
+    }
 }
