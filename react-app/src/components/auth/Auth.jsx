@@ -64,7 +64,7 @@ const Auth = (props) => {
                 setIsAuthenticated(true);
                 setWarning("");
                 navigate("/bonds");
-                props.getAuth(true);
+                props.getAuth(true, email);
             } else {
                 setIsAuthenticated(false);
                 setWarning("The password is incorrect!")

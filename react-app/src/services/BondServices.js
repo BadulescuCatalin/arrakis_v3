@@ -16,3 +16,7 @@ export const isinSearch = (isin) => {
 export const maturitySearch = (maturity) => {
   return axios.post(`${hostNameUrl}/securities/within5days`, maturity);
 }
+
+export const bookSearch = (user) => {
+  return axios.post(`${hostNameUrl}/securities/user`,user);
+}

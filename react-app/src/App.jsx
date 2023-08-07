@@ -8,14 +8,16 @@ import AllSecurities from './components/security/AllSecurities';
 
 const App = () => {
   const [isAutheticated, setIsAuthenticated] = useState(false);
+  const [email, setEmail] = useState("");
 
-  const getAuth = (authState) => {
+  const getAuth = (authState, email) => {
     setIsAuthenticated(authState);
+    setEmail(email);
   };
 
   return (
     <Routes>
-        <Route path="/bonds" element={<AllSecurities authState={isAutheticated} getAuth={getAuth}/>} />
+        <Route path="/bonds" element={<AllSecurities authState={isAutheticated} getAuth={getAuth} info={email}/>} />
         {/* <Route path="/bonds" element={<Bonds authState={isAutheticated} getAuth={getAuth}/>} /> */}
         <Route path="/" element={<Auth getAuth={getAuth}/>} />
     </Routes>
