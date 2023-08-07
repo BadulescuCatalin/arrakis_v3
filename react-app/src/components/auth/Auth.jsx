@@ -33,27 +33,29 @@ const Auth = (props) => {
         setWarning("");
     }
 
+    //frontend and backend interaction version
     const login2 = (e) => {
         e.preventDefault();
-        const credentials = {};
-        credentials.email = email;
-        credentials.password = password;
-        
-        userLogin(credentials)
-        .then(res => {
-            console.log(res);
-            setIsAuthenticated(true);
-            setWarning("");
-            props.getAuth(true);
-            navigate("/bonds");
-        })
-        .catch(err => {
-            setIsAuthenticated(false);
-            setWarning("Wrong Credentials!");
+        const credentials = {
+            email,
+            password
+        };
 
-        })
+        userLogin(credentials)
+            .then(res => {
+                console.log(res);
+                setIsAuthenticated(true);
+                setWarning("");
+                props.getAuth(true);
+                navigate("/bonds");
+            })
+            .catch(err => {
+                setIsAuthenticated(false);
+                setWarning("Wrong Credentials!");
+            })
     }
 
+    //local test version
     const login = (e) => {
         e.preventDefault();
         const user = dummyData.find(ele => ele.email === email);

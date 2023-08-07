@@ -13,10 +13,11 @@ const App = () => {
   };
 
   return (
-    <Routes>
-        <Route path="/bonds" element={<Bonds authState={isAutheticated} getAuth={getAuth}/>} />
-        <Route path="/" element={<Auth getAuth={getAuth}/>} />
-    </Routes>
+    // <Routes>
+    //     <Route path="/bonds" element={<Bonds authState={isAutheticated} getAuth={getAuth}/>} />
+    //     <Route path="/" element={<Auth getAuth={getAuth}/>} />
+    // </Routes>
+    <Bonds />
   )
 };
 
