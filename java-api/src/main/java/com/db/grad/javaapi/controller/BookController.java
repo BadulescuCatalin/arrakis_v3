@@ -4,12 +4,10 @@ import com.db.grad.javaapi.model.Bond;
 import com.db.grad.javaapi.model.Book;
 import com.db.grad.javaapi.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -24,5 +22,9 @@ public class BookController {
         return bookService.allBooks();
     }
 
-
+    @PostMapping("/myBooks")
+    public List<String> getMyBooks(@RequestBody Map<String, String> map){
+        String email = map.get("email");
+        return bookService.getUserBooks(email);
+    }
 }
