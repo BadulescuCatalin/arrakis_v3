@@ -1,6 +1,7 @@
 package com.db.grad.javaapi.controller;
 
 import com.db.grad.javaapi.model.Bond;
+import com.db.grad.javaapi.model.BondDetailed;
 import com.db.grad.javaapi.model.Security;
 import com.db.grad.javaapi.service.BondsService;
 import com.db.grad.javaapi.service.SecurityService;
@@ -25,8 +26,8 @@ public class SecurityController {
     SecurityService securityService;
 
     @GetMapping("/securities")
-    public List<Security> getAllSecurities() {
-        return securityService.getAllSecurities();
+    public List<BondDetailed> getAllSecurities() {
+        return securityService.getAllBondsDetailed();
     }
 
     @PostMapping("/securities/within5days")
@@ -96,9 +97,9 @@ public class SecurityController {
     }
 
     @PostMapping("security/counter_party_name")
-    public ResponseEntity<String> getCounterPartyByIsin(@RequestBody Map<String, String> map) {
+    public ResponseEntity<List<String>> getCounterPartyByIsin(@RequestBody Map<String, String> map) {
         String isin = map.get("isin");
-        String res =  securityService.getCounterPartyByIsin(isin);
+        List<String> res =  securityService.getCounterPartyByIsin(isin);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(res);
     }

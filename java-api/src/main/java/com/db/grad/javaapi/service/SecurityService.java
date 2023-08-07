@@ -1,12 +1,14 @@
 package com.db.grad.javaapi.service;
 
 import com.db.grad.javaapi.model.Bond;
+import com.db.grad.javaapi.model.BondDetailed;
 import com.db.grad.javaapi.model.Security;
 import com.db.grad.javaapi.repository.SecurityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,11 +35,21 @@ public class SecurityService {
         return securityRepository.findSecurityByIsinOrCusip(data);
     }
 
-    public String getCounterPartyByIsin(String isin) {
+    public List<String> getCounterPartyByIsin(String isin) {
         return securityRepository.findCounterPartyByIsin(isin);
     }
 
     public List<String> getBondsInMyBooks(String email) {
         return securityRepository.findBondsInMyBooks(email);
+    }
+
+    public List<BondDetailed> getAllBondsDetailed() {
+        List<Security> securities = getAllSecurities();
+        List<BondDetailed> detailed = new ArrayList<>();
+        BondDetailed bond = null;
+        for (Security s : securities) {
+            detailed.add(new BondDetailed(s, securityRepository.findCounterPartyByIsin(s.getIsin())));
+        }
+        return detailed;
     }
 }

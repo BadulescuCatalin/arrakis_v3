@@ -12,9 +12,9 @@ const SecurityDetails = (props) => {
         <Card >
             <Card.Body >
                 <Card.Title >Bond: {props.info.id}</Card.Title>
-                <Card.Text >Isin: {props.info.issin}</Card.Text>
+                <Card.Text >Isin: {props.info.isin}</Card.Text>
                 <Card.Text >Cusip: {props.info.cusip}</Card.Text>
-                <Card.Text >Bond_holder: {props.info.bond_holer}</Card.Text>
+                <Card.Text >Bond_holder: {props.info.client_name}</Card.Text>
                 <Row>
                     <Col><Button variant="primary" onClick={viewMoreDetails}>View More Details</Button></Col>
                 </Row>
