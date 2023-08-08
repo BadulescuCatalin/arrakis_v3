@@ -52,15 +52,15 @@ export const Books = (props) => {
 
 
   return (
-    <Accordion defaultActiveKey="0" className={styles.accordion}>
+    <Accordion className={styles.accordion}>
       {books.map((book, index) => (
         <Accordion.Item key={index} eventKey={index.toString()} onClick={() => handleAccordionItemClick(book[0])}>
           <Accordion.Header>{book[1]}</Accordion.Header>
-          <Accordion.Body>
+          {trades.length !== 0 && <Accordion.Body>
             {trades.map((trade, tradeIndex) => (
               <BondDetails key={tradeIndex} info={trade} />
             ))}
-          </Accordion.Body>
+          </Accordion.Body>}
         </Accordion.Item>
       ))}
     </Accordion>
