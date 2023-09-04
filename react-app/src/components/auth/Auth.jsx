@@ -43,6 +43,7 @@ const Auth = (props) => {
 
         userLogin(credentials)
             .then(res => {
+                localStorage.setItem("email", email);
                 console.log(res);
                 setIsAuthenticated(true);
                 setWarning("");
@@ -64,7 +65,7 @@ const Auth = (props) => {
                 setIsAuthenticated(true);
                 setWarning("");
                 navigate("/bonds");
-                props.getAuth(true);
+                props.getAuth(true, email);
             } else {
                 setIsAuthenticated(false);
                 setWarning("The password is incorrect!")

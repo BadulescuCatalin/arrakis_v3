@@ -1,11 +1,16 @@
-//DROP TABLE IF EXISTS dogs;
+-- Drop dependent tables first
 DROP TABLE IF EXISTS trades;
 DROP TABLE IF EXISTS book_user;
+
+-- Drop tables with no dependencies
+--DROP TABLE IF EXISTS all_bonds; -- Drop view first if it references tables
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS books;
-DROP TABLE IF EXISTS security;
 DROP TABLE IF EXISTS counter_party;
-DROP TABLE IF EXISTS bonds;
+DROP TABLE IF EXISTS security;
+DROP TABLE IF EXISTS security_temp;
+
+-- Drop the table that references "books"
+DROP TABLE IF EXISTS books;
 
 --CREATE TABLE dogs (
 --    dog_id INT NOT NULL,
@@ -38,13 +43,27 @@ CREATE TABLE security (
     isin VARCHAR(50) DEFAULT NULL,
     cusip VARCHAR(50) DEFAULT NULL,
     issuer_name VARCHAR(250) NOT NULL,
-    maturity_date VARCHAR(50) NOT NULL,
+    maturity_date DATE NOT NULL,
     coupon FLOAT NOT NULL,
     type VARCHAR(250) NOT NULL,
     face_value FLOAT NOT NULL,
     currency VARCHAR(5) NOT NULL,
     status VARCHAR(50) DEFAULT NULL
 );
+
+CREATE TABLE security_temp (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    isin VARCHAR(50) DEFAULT NULL,
+    cusip VARCHAR(50) DEFAULT NULL,
+    issuer_name VARCHAR(250) NOT NULL,
+    maturity_date DATE NOT NULL,
+    coupon FLOAT NOT NULL,
+    type VARCHAR(250) NOT NULL,
+    face_value FLOAT NOT NULL,
+    currency VARCHAR(5) NOT NULL,
+    status VARCHAR(50) DEFAULT NULL
+);
+
 
 CREATE TABLE counter_party (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -61,8 +80,8 @@ CREATE TABLE trades (
     quantity INT NOT NULL,
     unit_price FLOAT NOT NULL,
     buy_sell VARCHAR(50) NOT NULL,
-    trade_date VARCHAR(50) NOT NULL,
-    settlement_date VARCHAR(50) NOT NULL,
+    trade_date DATE NOT NULL,
+    settlement_date DATE NOT NULL,
     FOREIGN KEY (book_id) REFERENCES books(id),
     FOREIGN KEY (security_id) REFERENCES security(id),
     FOREIGN KEY (counter_party_id) REFERENCES counter_party(id)
@@ -78,10 +97,9 @@ CREATE TABLE trades (
 --SELECT  id, bond_maturity_date, isin from bonds;
 --
 CREATE VIEW IF NOT EXISTS all_bonds as
-SELECT concat (s.id, concat(b.id, c.id)) as id, s.isin, s.cusip, s.issuer_name, s.maturity_date as bond_maturity_date, s.coupon, s.type as type , s.face_value,
+SELECT  s.isin, s.cusip, s.issuer_name, s.maturity_date as bond_maturity_date, s.coupon, s.type as bond_type , s.face_value,
     s.currency as bond_currency, s.status as bond_status,
     t.currency as trade_currency, t.status as trade_status, t.quantity, t.unit_price, t.buy_sell, t.trade_date,
     t.settlement_date, b.book_name, c.name as bond_holder
 FROM security s join trades t on s.id = t.security_id join books b on t.book_id = b.id join counter_party c on t.counter_party_id = c.id;
-
 

@@ -4,153 +4,163 @@ import { Button, Card, Col, Form, Row, Table } from "react-bootstrap";
 import styles from "./Bonds.module.css";
 import { useNavigate } from "react-router-dom";
 
-const dummyData = [
-  {
-    "trade_type": "buy",
-    "trade_currency": "USD",
-    "quantity": 50,
-    "trade_settlement_date": "04/08/2021",
-    "trade_status": "open",
-    "trade_date": "13/05/2021",
-    "unit_price": 90,
-    "coupon_percent": 4.37,
-    "bond_currency": "USD",
-    "cusip": "",
-    "face_value (mn)": 1000,
-    "isin": "XS1988387210",
-    "issuer_name": "BNPParibasIssu 4,37% Microsoft Corp (USD)",
-    "bond_maturity_date": "05/08/2023",
-    "status": "active",
-    "type": "CORP",
-    "book_name": "trading_book_1",
-    "bond_holder": "AZ Holdings Inc"
-  },
-  {
-    "trade_type": "sell",
-    "trade_currency": "GBP",
-    "quantity": 40,
-    "trade_settlement_date": "04/08/2021",
-    "trade_status": "open",
-    "trade_date": "04/02/2021",
-    "unit_price": 89.56,
-    "coupon_percent": 4.37,
-    "bond_currency": "USD",
-    "cusip": "",
-    "face_value (mn)": 1000,
-    "isin": "XS1988387210",
-    "issuer_name": "BNPParibasIssu 4,37% Microsoft Corp (USD)",
-    "bond_maturity_date": "05/08/2023",
-    "status": "active",
-    "type": "CORP",
-    "book_name": "trading_book_1",
-    "bond_holder": "AZ Holdings Inc"
-  },
-  {
-    "trade_type": "buy",
-    "trade_currency": "USD",
-    "quantity": 1000,
-    "trade_settlement_date": "23/08/2021",
-    "trade_status": "open",
-    "trade_date": "13/05/2021",
-    "unit_price": 105.775,
-    "coupon_percent": 3.15,
-    "bond_currency": "USD",
-    "cusip": "123456780",
-    "face_value (mn)": 900,
-    "isin": "USN0280EAR64",
-    "issuer_name": "Airbus 3.15%  USD",
-    "bond_maturity_date": "12/07/2021",
-    "status": "active",
-    "type": "CORP",
-    "book_name": "trading_book_2",
-    "bond_holder": "Acme co"
-  }
-];
+// const dummyData = [
+//   {
+//     "trade_type": "buy",
+//     "trade_currency": "USD",
+//     "quantity": 50,
+//     "trade_settlement_date": "04/08/2021",
+//     "trade_status": "open",
+//     "trade_date": "13/05/2021",
+//     "unit_price": 90,
+//     "coupon_percent": 4.37,
+//     "bond_currency": "USD",
+//     "cusip": "",
+//     "face_value (mn)": 1000,
+//     "isin": "XS1988387210",
+//     "issuer_name": "BNPParibasIssu 4,37% Microsoft Corp (USD)",
+//     "bond_maturity_date": "05/08/2023",
+//     "status": "active",
+//     "type": "CORP",
+//     "book_name": "trading_book_1",
+//     "bond_holder": "AZ Holdings Inc"
+//   },
+//   {
+//     "trade_type": "sell",
+//     "trade_currency": "GBP",
+//     "quantity": 40,
+//     "trade_settlement_date": "04/08/2021",
+//     "trade_status": "open",
+//     "trade_date": "04/02/2021",
+//     "unit_price": 89.56,
+//     "coupon_percent": 4.37,
+//     "bond_currency": "USD",
+//     "cusip": "",
+//     "face_value (mn)": 1000,
+//     "isin": "XS1988387210",
+//     "issuer_name": "BNPParibasIssu 4,37% Microsoft Corp (USD)",
+//     "bond_maturity_date": "05/08/2023",
+//     "status": "active",
+//     "type": "CORP",
+//     "book_name": "trading_book_1",
+//     "bond_holder": "AZ Holdings Inc"
+//   },
+//   {
+//     "trade_type": "buy",
+//     "trade_currency": "USD",
+//     "quantity": 1000,
+//     "trade_settlement_date": "23/08/2021",
+//     "trade_status": "open",
+//     "trade_date": "13/05/2021",
+//     "unit_price": 105.775,
+//     "coupon_percent": 3.15,
+//     "bond_currency": "USD",
+//     "cusip": "123456780",
+//     "face_value (mn)": 900,
+//     "isin": "USN0280EAR64",
+//     "issuer_name": "Airbus 3.15%  USD",
+//     "bond_maturity_date": "12/07/2021",
+//     "status": "active",
+//     "type": "CORP",
+//     "book_name": "trading_book_2",
+//     "bond_holder": "Acme co"
+//   }
+// ];
 
 export const Bonds = (props) => {
-  const [bonds, setBonds] = useState(dummyData);
+  const [bonds, setBonds] = useState([]);
   const [date, setDate] = useState("");
   const [warning, setWarning] = useState("");
   const [identifier, setIdentifier] = useState("");
   const [deBonds, setDeBonds] = useState([]);
   const navigate = useNavigate();
-  const allBonds = dummyData;
 
   //local test version
   const dateChange = e => {
     setDate(e.target.value);
-    setBonds(allBonds);
     setWarning("");
   }
 
   //local test version
   const identifierChange = e => {
     setIdentifier(e.target.value);
-    setBonds(allBonds);
   }
 
   // local test version
-  const checkClick = e => {
-    e.preventDefault();
-    let enteredDate = date.split("/");
-    let day = +enteredDate[0];
-    let month = +enteredDate[1];
-    let year = +enteredDate[2];
-    let temp = [];
-    if (Number.isInteger(day) && Number.isInteger(month) && Number.isInteger(year)
-      && day >= 1 && day <= 31 && month >= 1 && month <= 31 && year >= 1900) {
-      for (let i = 0; i < bonds.length; i++) {
-        //get the filtered bonds based on maturity date
-        let rawDate = bonds[i]["bond_maturity_date"].split("/");
-        let maturityDate = new Date(rawDate[2], rawDate[1] - 1, rawDate[0]).getTime();
-        let nowDate = new Date(year, month - 1, day).getTime();
-        if (Math.abs((nowDate - maturityDate) / 3600000) <= 7 * 24) {
-          temp.push(bonds[i])
-        }
-      }
-      setBonds(temp);
-      setWarning("");
-    } else {
-      setWarning("Please enter the correct date format!");
-    }
-  }
-
-  // backend interaction version
   // const checkClick = e => {
   //   e.preventDefault();
-
   //   let enteredDate = date.split("/");
   //   let day = +enteredDate[0];
   //   let month = +enteredDate[1];
   //   let year = +enteredDate[2];
+  //   let temp = [];
   //   if (Number.isInteger(day) && Number.isInteger(month) && Number.isInteger(year)
   //     && day >= 1 && day <= 31 && month >= 1 && month <= 31 && year >= 1900) {
-  //     maturitySearch(date)
-  //       .then(({ data }) => {
-  //         console.log(data);
-  //         setBonds(data);
-  //         setWarning("");
-  //       })
+  //     for (let i = 0; i < bonds.length; i++) {
+  //       //get the filtered bonds based on maturity date
+  //       let rawDate = bonds[i]["bond_maturity_date"].split("/");
+  //       let maturityDate = new Date(rawDate[2], rawDate[1] - 1, rawDate[0]).getTime();
+  //       let nowDate = new Date(year, month - 1, day).getTime();
+  //       if (Math.abs((nowDate - maturityDate) / 3600000) <= 7 * 24) {
+  //         temp.push(bonds[i])
+  //       }
+  //     }
+  //     setBonds(temp);
+  //     setWarning("");
   //   } else {
   //     setWarning("Please enter the correct date format!");
   //   }
   // }
 
-  // local test version
-  const checkClick2 = e => {
+  //backend interaction version
+  const checkClick = e => {
     e.preventDefault();
-    const filteredBonds = [].concat(allBonds.filter(ele => ele.isin === identifier || ele.cusip === identifier));
-    setBonds(filteredBonds);
+
+    let enteredDate = date.split("/");
+    let day = +enteredDate[0];
+    let month = +enteredDate[1];
+    let year = +enteredDate[2];
+    if (Number.isInteger(day) && Number.isInteger(month) && Number.isInteger(year)
+      && day >= 1 && day <= 31 && month >= 1 && month <= 31 && year >= 1900) {
+      setDate(enteredDate);
+      const dateMap = {
+        date
+      };
+      maturitySearch(dateMap)
+        .then(({ data }) => {
+          console.log(data);
+          setBonds(data);
+          setDate("");
+          setWarning("");
+        })
+        .catch(error => {
+          console.log(dateMap);
+          console.error("Error occurred during API call:", error);
+          // Handle the error as needed, e.g., set an error message state
+        });
+    } else {
+      setWarning("Please enter the correct date format!");
+    }
   }
 
-  // backend interaction version
+  // local test version
   // const checkClick2 = e => {
   //   e.preventDefault();
-  //   isinSearch(isin)
-  //     .then(({ data }) => {
-  //       setBonds(data);
-  //     })
+  //   const filteredBonds = [].concat(allBonds.filter(ele => ele.isin === identifier || ele.cusip === identifier));
+  //   setBonds(filteredBonds);
   // }
+
+  // backend interaction version
+  const checkClick2 = e => {
+    e.preventDefault();
+    const map = {
+      "data": identifier
+    };
+    isinSearch(map)
+      .then(({ data }) => {
+        setBonds(data);
+      })
+  }
 
   const logout = () => {
     props.getAuth(false);
@@ -178,21 +188,21 @@ export const Bonds = (props) => {
   }, [bonds]);
 
   // get all the bonds for the initial render
-  // useEffect(() => {
-  //   findBonds()
-  //     .then(({data}) => {
-  //       setBonds(data);
-  //     })
-  // }, []);
+  useEffect(() => {
+    findBonds()
+      .then(({data}) => {
+        setBonds(data);
+      })
+  }, []);
 
 
   // router guard
-  // useEffect(()=>{
-  //   console.log(props.authState);
-  //   if(!props.authState) {
-  //     navigate("/");
-  //   }
-  // }, []);
+  useEffect(()=>{
+    console.log(props.authState);
+    if(!props.authState) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <>
@@ -200,7 +210,7 @@ export const Bonds = (props) => {
 
       <Table responsive>
         <thead>
-          {<tr>{Object.keys(allBonds[0]).map((bondKey, index) => (
+          {<tr>{Object.keys(bonds[0]).map((bondKey, index) => (
             <th key={index}>{bondKey}</th>
           )
           )}</tr>}
